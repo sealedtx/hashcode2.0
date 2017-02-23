@@ -24,10 +24,14 @@ public class Cache {
         }
     }
 
-    public void addVideo(int video) {
+    public void addVideo(int video, int videoSize) {
         long sum = 0;
+        if (videoSize <= this.size) {
+            usefullness.put(video, -1L);
+            return;
+        }
         for (Endpoint endpoint : endpoints) {
-            Long cachLat = endpoint.cacheList.get(video);
+            Long cachLat = endpoint.cacheList.get(index);
             Long requestNum = endpoint.requestList.get(video);
             if (requestNum != null)
                 sum += requestNum * (endpoint.datacenter - cachLat);
