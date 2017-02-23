@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by User on 23.02.2017.
@@ -9,7 +10,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        Input input = new Input(new File("e.in"));
+        Input input = new Input(new File("input.in"));
         ArrayList<Endpoint> endpoints = input.getEndpoints();
 
         List<Cache> cacheList = new ArrayList<>();
@@ -20,9 +21,32 @@ public class Main {
 
         int[] videos = input.getVideos();
         for (int i = 0; i < videos.length; i++) {
-            for (Cache cache: cacheList) {
+            for (Cache cache : cacheList) {
                 cache.addVideo(i, videos[i]);
             }
+        }
+
+        for (Cache cache : cacheList) {
+            int index = cache.saveVideo();
+            if (index != -1) {
+                for (Cache c : cacheList) {
+                    c.removeVideo(index);
+                }
+            }
+        }
+
+        int usedCache = 0;
+        for (Cache cache : cacheList) {
+            if (cache.size < input.getCacheSize())
+                usedCache++;
+        }
+        System.out.println(usedCache);
+        for (Cache cache : cacheList) {
+            String result = cache.index + "";
+            for (Map.Entry<Integer, Long> entry : cache.cachedVideos.entrySet()) {
+                result += " " + entry.getKey();
+            }
+            System.out.println(result);
         }
     }
 }

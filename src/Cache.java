@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by User on 23.02.2017.
@@ -12,12 +10,15 @@ public class Cache {
     long winMillis = 0;
     List<Endpoint> endpoints;
     HashMap<Integer, Long> usefullness;
+    HashMap<Integer, Long> cachedVideos;
+
 
     public Cache(int index, int size, List<Endpoint> endpoints) {
         this.index = index;
         this.size = size;
         this.endpoints = new ArrayList<>();
         this.usefullness = new HashMap<>();
+        this.cachedVideos = new HashMap<>();
         for (Endpoint endpoint : endpoints) {
             Long lat = endpoint.cacheList.get(index);
             if (lat != null)
@@ -38,5 +39,26 @@ public class Cache {
                 sum += requestNum * (endpoint.datacenter - cachLat);
         }
         usefullness.put(video, sum);
+    }
+
+    public int saveVideo() {
+        List<Long> usefull = new ArrayList<>(usefullness.values());
+        Collections.sort(usefull);
+        Collections.reverse(usefull);
+        for (Map.Entry<Integer, Long> entry : usefullness.entrySet()) {
+            Integer key = entry.getKey();
+            Long value = entry.getValue();
+            if (value == usefull.get(0)) {
+                size -= key; // TODO: FAIL
+                usefullness.remove(key);
+                cachedVideos.put(key, value);
+                return key;
+            }
+        }
+        return -1;
+    }
+
+    public void removeVideo(int index) {
+        usefullness.remove(index);
     }
 }
