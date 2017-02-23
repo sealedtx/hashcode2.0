@@ -17,6 +17,7 @@ public class Cache {
         this.index = index;
         this.size = size;
         this.endpoints = new ArrayList<>();
+        this.usefullness = new HashMap<>();
         for (Endpoint endpoint : endpoints) {
             Long lat = endpoint.cacheList.get(index);
             if (lat != null)
@@ -26,7 +27,7 @@ public class Cache {
 
     public void addVideo(int video, int videoSize) {
         long sum = 0;
-        if (videoSize <= this.size) {
+        if (videoSize > this.size) {
             usefullness.put(video, -1L);
             return;
         }

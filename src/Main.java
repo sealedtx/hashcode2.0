@@ -9,13 +9,20 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        Input input = new Input(new File("input.in"));
+        Input input = new Input(new File("e.in"));
         ArrayList<Endpoint> endpoints = input.getEndpoints();
 
         List<Cache> cacheList = new ArrayList<>();
         for (int i = 0; i < input.getCacheNum(); i++) {
             Cache cache = new Cache(i, input.getCacheSize(), endpoints);
             cacheList.add(cache);
+        }
+
+        int[] videos = input.getVideos();
+        for (int i = 0; i < videos.length; i++) {
+            for (Cache cache: cacheList) {
+                cache.addVideo(i, videos[i]);
+            }
         }
     }
 }

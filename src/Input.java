@@ -12,6 +12,7 @@ public class Input {
     private final int cacheNum;
     private final int cacheSize;
     private final ArrayList<Endpoint> endpoints = new ArrayList();
+    private final int videos[];
 
     public ArrayList<Endpoint> getEndpoints() {
         return endpoints;
@@ -25,6 +26,10 @@ public class Input {
         return cacheSize;
     }
 
+    public int[] getVideos() {
+        return videos;
+    }
+
     public Input(File file) throws FileNotFoundException {
         Scanner scan = new Scanner(file);
         int V = scan.nextInt();
@@ -32,7 +37,7 @@ public class Input {
         int R = scan.nextInt();
         cacheNum = scan.nextInt();
         cacheSize = scan.nextInt();
-        int videos[] = new int[V];
+        videos = new int[V];
         for (int i = 0; i < V; i++)
             videos[i] = scan.nextInt();
         for (int i = 0; i < E; i++) {
