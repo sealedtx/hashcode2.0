@@ -5,6 +5,7 @@ import java.util.*;
  */
 public class Cache {
 
+    private final int[] videos;
     int index;
     int size;
     long winMillis = 0;
@@ -13,7 +14,8 @@ public class Cache {
     HashMap<Integer, Long> cachedVideos;
 
 
-    public Cache(int index, int size, List<Endpoint> endpoints) {
+    public Cache(int index, int size, List<Endpoint> endpoints, int[] videos) {
+        this.videos = videos;
         this.index = index;
         this.size = size;
         this.endpoints = new ArrayList<>();
@@ -49,10 +51,12 @@ public class Cache {
             Integer key = entry.getKey();
             Long value = entry.getValue();
             if (value == usefull.get(0)) {
-                size -= key; // TODO: FAIL
-                usefullness.remove(key);
-                cachedVideos.put(key, value);
-                return key;
+                if (size >= videos[key]) {
+                    size -= videos[key];
+                    usefullness.remove(key);
+                    cachedVideos.put(key, value);
+                    return key;
+                }
             }
         }
         return -1;
