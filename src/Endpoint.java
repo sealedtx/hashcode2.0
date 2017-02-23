@@ -5,7 +5,7 @@ import java.util.HashMap;
  */
 public class Endpoint {
 
-    int datacenter;
+    public int datacenter;
     public HashMap<Integer, Long> cacheList;
     public HashMap<Integer, Long> requestList;
 
@@ -19,7 +19,5 @@ public class Endpoint {
     public void addRequest(Integer video, Long num) {
         requestList.put(video, num);
     }
-
-
 
 }
